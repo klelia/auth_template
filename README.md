@@ -12,6 +12,10 @@
 ```bash
 cd your parent_folder_path
 
+#con laravel installer
+laravel new your_project_name_here
+
+#per versione 9
 composer create-project --prefer-dist laravel/laravel:^9.2 your_project_name_here
 
 cd your_project_name_here
@@ -25,22 +29,80 @@ ctrl + c
 ```
 ## Configurazione Laravel
 ```bash
-composer require pacificdev/laravel_9_preset
-
-php artisan preset:ui bootstrap
-
-npm install
-
-npm install --save @fortawesome/fontawesome-free
-
-#in vite config aggiungo agli alias
-'~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
-
-#copio la cartella dei webfont e se voglio la rinomino
+npm remove postcss
 
 #installo dbal per migration e seeder
 composer require doctrine/dbal
 
+composer require guzzlehttp/guzzle
+
+composer require laravel/breeze --dev
+php artisan breeze:install
+
+
+composer require pacificdev/laravel_9_preset
+
+#solo per versione 9
+php artisan preset:ui bootstrap
+
+npm install bootstrap axios @fortawesome/fontawesome-free sass
+
+#in vite config aggiungo agli alias
+'~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
+
+#copio la cartella dei webfont e se voglio la rinomino e la copio nella cartella font
+
+#app.js
+import "./bootstrap";
+import "~resources/scss/app.scss";
+import * as bootstrap from "bootstrap";
+import.meta.glob(["../img/**", "../fonts/**"]);
+
+#app.scss
+@use './partials/variables' as *;
+
+$fa-font-path: "../fonts/webfonts" !default;
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+
+@import '~bootstrap/scss/bootstrap';
+
+h1 {
+    color: $text-color;
+}
+#vite.config.js
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import * as path from "path";
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ["resources/scss/app.scss", "resources/js/app.js"],
+            refresh: true,
+        }),
+    ],
+    // Add resolve object and aliases
+    resolve: {
+        alias: {
+            "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
+            "~@fortawesome": path.resolve(
+                __dirname,
+                "node_modules/@fortawesome"
+            ),
+            "~resources": "/resources/",
+        },
+    },
+});
+
+#sistemo (cambio/rimuovo) template e routing
+
+#volendo personalizzo paginazione e pagine di errore
+php artisan vendor:publish --tag=laravel-errors
+php artisan vendor:publish --tag=laravel-pagination
 
 #comandi git
 
