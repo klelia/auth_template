@@ -37,7 +37,7 @@ composer require doctrine/dbal
 composer require guzzlehttp/guzzle
 
 composer require laravel/breeze --dev
-php artisan breeze:install
+php artisan breeze:install #blade
 
 
 composer require pacificdev/laravel_9_preset
@@ -73,6 +73,7 @@ $fa-font-path: "../fonts/webfonts" !default;
 h1 {
     color: $text-color;
 }
+
 #vite.config.js
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
