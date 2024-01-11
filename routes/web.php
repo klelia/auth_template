@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ComicController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +23,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    //Route::resource('comics', ComicController::class);
 });
-
-
-
 
 
 Route::middleware('auth')->group(function () {
@@ -35,3 +34,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::fallback(function () {
+    return redirect()->route('admin.dashboard');
+});

@@ -162,7 +162,7 @@ php artisan make:controller NomeController --resource
 #creo model
 php artisan make:model Nome 
 #posso creare il model e contestualmente resource controller, migration, seeder e form request per validazioni
-php artisan make:model Nome -rcms --request
+php artisan make:model Nome -rcms --requests
 
 # creo le views relative
 
@@ -170,5 +170,35 @@ php artisan make:model Nome -rcms --request
 	
 php artisan make:request StoreMomemodelRequest
 
+
+```
+## Auth
+
+```bash
+#in app/Providers/RouteServiceProvider.php modifico
+public const HOME = '/admin';
+
+# Se l’utente non è autenticato, sarà dirottato automaticamente verso la pagina di login.
+# Questo comportamento è modificabile nel file in app/Http/Middleware/Authenticate.php
+
+php artisan make:controller Admin/DashboardController
+# nel controller
+public function index(){
+        return view('admin.dashboard');
+    }
+
+Route::middleware(['auth', 'verified'])
+   ->name('admin.')
+   ->prefix('admin')
+   ->group(function () {
+         Route::get('/', [DashboardController::class, 'index'])
+         ->name('dashboard');
+   });
+
+....
+
+Route::fallback(function() {
+    return redirect()->route('admin.dashboard');
+});
 
 ```
