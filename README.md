@@ -202,3 +202,23 @@ Route::fallback(function() {
 });
 
 ```
+## File Storage
+```bash
+#modifico in env file system 
+es. FILESYSTEM_DISK=public
+
+#In config/filestystems.php 
+#Caricheremo i nostri file nella cartella storage/app/public
+# modifichiamo quindi 
+'default' => env('FILESYSTEM_DRIVER', 'public'),
+
+#lanciare comando
+php artisan storage:link
+
+#salvare
+Storage::put('images', $data['image']); //ritorna il path
+
+#per visualizzare 
+<img src="{{ asset('storage/' . $post->cover_image) }}">
+
+```
